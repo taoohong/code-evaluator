@@ -1,6 +1,7 @@
 import os
 import pymongo
 import requests
+from groq import Groq
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
@@ -9,25 +10,24 @@ from .models import AnalysisResult
 
 mongo_client = pymongo.MongoClient(settings.MONGO_URI)
 mongo_db = mongo_client[settings.MONGO_DB]
+client = Groq(
+    api_key=settings.GROQ_API_KEY,
+)
 
 def call_groq_llm(content, file_type):
-    url = "https://api.groq.com/openai/v1/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {settings.GROQ_API_KEY}",
-        "Content-Type": "application/json"
-    }
     prompt = build_prompt(content, file_type)
-    payload = {
-        "model": "deepseek-r1-distill-llama-70b",
-        "messages": [
-            {"role": "user", "content": prompt}
-        ],
-        "temperature": 0.2
-    }
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=60)
-        response.raise_for_status()
-        completion = response.json()["choices"][0]["message"]["content"]
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+            model="deepseek-r1-distill-llama-70b",
+            temperature=0.6,
+        )
+        completion = chat_completion.choices[0].message.content
         score_line = [line for line in completion.splitlines() if "score" in line.lower()]
         score = 80.0
         if score_line:
@@ -54,6 +54,9 @@ def build_prompt(content, file_type):
 def upload_files(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
+        save_dir = settings.MEDIA_ROOT
+        os.makedirs(save_dir, exist_ok=True)
+
         if form.is_valid():
             files = request.FILES.getlist('code_files') + request.FILES.getlist('sql_files')
             for f in files:
