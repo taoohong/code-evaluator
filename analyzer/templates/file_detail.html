@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>文件分析详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-4">
+    <h1 class="text-2xl">{{ result.filename }} 分析详情</h1>
+    <p><strong>评分:</strong> {{ result.score }}</p>
+    <h2 class="text-xl mt-4">建议:</h2>
+    <pre class="bg-gray-100 p-2">{{ result.suggestions }}</pre>
+    <h2 class="text-xl mt-4">文件内容:</h2>
+    <pre class="bg-gray-100 p-2 overflow-x-auto">{{ file_content }}</pre>
+    <a href="/results/" class="text-blue-500">返回结果页</a>
+</body>
+</html>
