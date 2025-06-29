@@ -10,12 +10,14 @@ from .models import AnalysisResult
 
 mongo_client = pymongo.MongoClient(settings.MONGO_URI)
 mongo_db = mongo_client[settings.MONGO_DB]
+
 client = Groq(
     api_key=settings.GROQ_API_KEY,
 )
 
 def call_groq_llm(content, file_type):
     prompt = build_prompt(content, file_type)
+    print(settings.GROQ_API_KEY)
     try:
         chat_completion = client.chat.completions.create(
             messages=[
@@ -47,9 +49,19 @@ def call_groq_llm(content, file_type):
 
 def build_prompt(content, file_type):
     if file_type == 'sql':
-        return f"Evaluate the following SQL script focusing on performance, readability, risk (like SQL injection), and maintainability. Provide a 0-100 score and suggestions.\n\n{content}"
+        return f"""
+请使用中文评估以下 SQL 脚本的质量，重点关注性能优化、可读性、风险点（如 SQL 注入）以及可维护性。请给出一个 0 到 100 的评分，并提供详细改进建议。
+
+内容如下：
+{content}
+"""
     else:
-        return f"Evaluate the following code file (Python) focusing on readability, maintainability, performance, security, and style consistency. Provide a 0-100 score and suggestions.\n\n{content}"
+        return f"""
+请使用中文评估以下代码文件的质量，重点关注可读性、可维护性、性能、安全性、编码风格一致性。请给出一个 0 到 100 的评分，并提供详细改进建议。
+
+内容如下：
+{content}
+"""
 
 def upload_files(request):
     if request.method == 'POST':
@@ -96,7 +108,8 @@ def file_detail(request, file_id):
 
 def initialize_system(request):
     try:
-        mongo_db.create_collection("files")
+        # mongo_db.create_collection("files")
+        print('init mongodb')
     except:
         pass
     return HttpResponse("MongoDB collection initialized.")

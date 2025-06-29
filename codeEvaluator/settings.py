@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -86,7 +87,7 @@ MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 MONGO_DB = "code_quality_db"
 
 # Groq Cloud API 配置
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "your_groq_api_key_here")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "your_groq_api_key")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
