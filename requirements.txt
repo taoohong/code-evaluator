@@ -1,5 +1,13 @@
+# Core
 django>=5.0
-pymongo
 python-dotenv
 requests
+
+# UI
+python-bootstrap5
+
+# LLM
 groq
+
+# DB
+pymongo

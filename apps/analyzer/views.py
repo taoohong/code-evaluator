@@ -5,11 +5,13 @@ from groq import Groq
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from urllib3 import request
+
 from .forms import UploadFileForm
 from .models import AnalysisResult
 
-mongo_client = pymongo.MongoClient(settings.MONGO_URI)
-mongo_db = mongo_client[settings.MONGO_DB]
+# mongo_client = pymongo.MongoClient(settings.MONGO_URI)
+# mongo_db = mongo_client[settings.MONGO_DB]
 
 client = Groq(
     api_key=settings.GROQ_API_KEY,
@@ -79,11 +81,11 @@ def upload_files(request):
                 with open(save_path, 'r', encoding='utf-8', errors='ignore') as fp:
                     content = fp.read()
                 file_type = 'sql' if f.name.endswith('.sql') else 'code'
-                mongo_db.files.insert_one({
-                    'filename': f.name,
-                    'content': content,
-                    'file_type': file_type
-                })
+                # mongo_db.files.insert_one({
+                #     'filename': f.name,
+                #     'content': content,
+                #     'file_type': file_type
+                # })
                 analysis = call_groq_llm(content, file_type)
                 AnalysisResult.objects.create(
                     filename=f.name,
@@ -102,9 +104,9 @@ def analysis_results(request):
 
 def file_detail(request, file_id):
     result = get_object_or_404(AnalysisResult, pk=file_id)
-    file_doc = mongo_db.files.find_one({"filename": result.filename})
-    file_content = file_doc.get("content", "文件内容未找到") if file_doc else "文件内容未找到"
-    return render(request, 'file_detail.html', {'result': result, 'file_content': file_content})
+    # file_doc = mongo_db.files.find_one({"filename": result.filename})
+    # file_content = file_doc.get("content", "文件内容未找到") if file_doc else "文件内容未找到"
+    # return render(request, 'file_detail.html', {'result': result, 'file_content': file_content})
 
 def initialize_system(request):
     try:
@@ -113,3 +115,10 @@ def initialize_system(request):
     except:
         pass
     return HttpResponse("MongoDB collection initialized.")
+
+def sql_analyzer(request):
+    return render(request, 'analyzer/sql_analyzer.html')
+
+
+def code_analyzer(request):
+    return render(request, 'analyzer/code_analyzer.html')
