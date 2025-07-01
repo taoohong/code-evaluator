@@ -4,10 +4,6 @@
 {% block breadcrumb %}SQL Analyzer{% endblock %}
 
 {% block content %}
-    <div class="row removable">
-        <div class="col-lg-6"><input class="form-control mb-4" placeholder="test"></div>
-        <div class="col-lg-6"><button class="btn btn-primary mb-4">Button</button></div>
-    </div>
     <div class="card mb-4">
         <div class="card-body p-3">
             <div class="bg-gradient-dark border-radius-lg py-3 pe-1 mb-3">
@@ -138,6 +134,18 @@
             </div>
         </div>
     </div>
+
+    <!-- SQL 文件上传表单 -->
+    <form method="post" enctype="multipart/form-data" class="row g-3 align-items-center mb-4">
+        {% csrf_token %}
+        <div class="col-lg-6">
+            <input type="file" class="form-control mb-4" name="sql_file" accept=".sql" required>
+        </div>
+        <div class="col-lg-6">
+            <button type="submit" class="btn btn-primary mb-4">上传SQL文件</button>
+        </div>
+    </form>
+    
     <div class="card mb-4">
         <div class="card-body p-3">
             <div class="row">
