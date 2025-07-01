@@ -117,8 +117,8 @@ def initialize_system(request):
     return HttpResponse("MongoDB collection initialized.")
 
 def sql_analyzer(request):
-    return render(request, 'analyzer/sql_analyzer.html')
+    return render(request, 'analyzer/sql_analyzer.html', {'active_page': 'sql'})
 
 
 def code_analyzer(request):
-    return render(request, 'analyzer/code_analyzer.html')
+    return render(request, 'analyzer/code_analyzer.html', {'active_page': 'code'})
