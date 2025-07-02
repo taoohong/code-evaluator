@@ -1,11 +1,18 @@
 from django import forms
 
-class UploadFileForm(forms.Form):
-    code_files = forms.FileField(
-        widget=forms.ClearableFileInput(),
-        required=False
-    )
-    sql_files = forms.FileField(
-        widget=forms.ClearableFileInput(),
-        required=False
-    )
+class UploadCodeForm(forms.Form):
+    code_file = forms.FileField(required=True)
+    task_name = forms.CharField(max_length=255, required=False)
+    description = forms.CharField(widget=forms.Textarea, required=False)
+
+
+class UploadProjectForm(forms.Form):
+    code_files = forms.FileField(required=True)
+    task_name = forms.CharField(max_length=255, required=False)
+    description = forms.CharField(widget=forms.Textarea, required=False)
+
+
+class UploadSQLForm(forms.Form):
+    sql_file = forms.FileField(required=True)
+    task_name = forms.CharField(max_length=255, required=False)
+    description = forms.CharField(widget=forms.Textarea, required=False)

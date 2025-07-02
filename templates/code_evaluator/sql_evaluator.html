@@ -1,0 +1,454 @@
+{% extends "base.html" %}
+
+{% block title %}SQL Analyzer{% endblock %}
+{% block breadcrumb %}SQL Analyzer{% endblock %}
+
+{% block content %}
+    <!--项目目录-->
+    <div class="card mb-4">
+        <div class="card-header pb-0">
+            <h6>任务列表</h6>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+                <table class="table align-items-center justify-content-center mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Project</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Budget</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Completion</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2">
+                                    <div>
+                                        <img src="https://demos.creative-tim.com/soft-ui-dashboard/assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm rounded-circle me-2">
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm">Spotify</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="text-sm font-weight-bold mb-0">$2,500</p>
+                            </td>
+                            <td>
+                                <span class="text-xs font-weight-bold">working</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="me-2 text-xs font-weight-bold">60%</span>
+                                    <div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-link text-secondary mb-0">
+                                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2">
+                                    <div>
+                                        <img src="https://demos.creative-tim.com/soft-ui-dashboard/assets/img/small-logos//logo-invision.svg" class="avatar avatar-sm rounded-circle me-2">
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm">Invision</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="text-sm font-weight-bold mb-0">$5,000</p>
+                            </td>
+                            <td>
+                                <span class="text-xs font-weight-bold">done</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="me-2 text-xs font-weight-bold">100%</span>
+                                    <div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2">
+                                    <div>
+                                        <img src="https://demos.creative-tim.com/soft-ui-dashboard/assets/img/small-logos//logo-jira.svg" class="avatar avatar-sm rounded-circle me-2">
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm">Jira</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="text-sm font-weight-bold mb-0">$3,400</p>
+                            </td>
+                            <td>
+                                <span class="text-xs font-weight-bold">canceled</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="me-2 text-xs font-weight-bold">30%</span>
+                                    <div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-gradient-danger" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="30" style="width: 30%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2">
+                                    <div>
+                                        <img src="https://demos.creative-tim.com/soft-ui-dashboard/assets/img/small-logos/logo-slack.svg" class="avatar avatar-sm rounded-circle me-2">
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm">Slack</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="text-sm font-weight-bold mb-0">$1,000</p>
+                            </td>
+                            <td>
+                                <span class="text-xs font-weight-bold">canceled</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="me-2 text-xs font-weight-bold">0%</span>
+                                    <div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2">
+                                    <div>
+                                        <img src="https://demos.creative-tim.com/soft-ui-dashboard/assets/img/small-logos/logo-webdev.svg" class="avatar avatar-sm rounded-circle me-2">
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm">Webdev</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="text-sm font-weight-bold mb-0">$14,000</p>
+                            </td>
+                            <td>
+                                <span class="text-xs font-weight-bold">working</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="me-2 text-xs font-weight-bold">80%</span>
+                                    <div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="80" style="width: 80%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex px-2">
+                                    <div>
+                                        <img src="https://demos.creative-tim.com/soft-ui-dashboard/assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm rounded-circle me-2">
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm">Adobe XD</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="text-sm font-weight-bold mb-0">$2,300</p>
+                            </td>
+                            <td>
+                                <span class="text-xs font-weight-bold">done</span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="me-2 text-xs font-weight-bold">100%</span>
+                                    <div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <button class="btn btn-link text-secondary mb-0" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--代码文件上传-->
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h6 class="mb-0">上传SQL文件</h6>
+                </div>
+                <!-- <div class="col-4 text-end">
+                    <a href="#!" class="btn btn-sm bg-gradient-primary mb-0">Settings</a>
+                </div> -->
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" action="{% url 'upload_sql' %}">
+                {% csrf_token %}
+                <h6 class="heading-small text-muted mb-4">项目选择</h6>
+                <div>
+                    <!--todo 可以选择项目-->
+                </div>
+                <hr class="horizontal dark my-4">
+                <!-- Address -->
+                <h6 class="heading-small text-muted mb-4">审查SQL</h6>
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label">任务名称</label>
+                                <input class="form-control" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09" type="text">
+                            </div>
+                        </div>
+                    </div> 
+                    <label class="form-control-label">上传SQL</label>
+                    {% csrf_token %}
+                    <div class="col-md-10">
+                        <div class="row align-items-center mb-2">
+                            <input type="file" class="form-control mb-4" name="sql_file" accept=".sql" required>
+                            <div class="form-text">仅限上传SQL文件</div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="horizontal dark my-4">
+                <!-- Description -->
+                <h6 class="heading-small text-muted mb-4">其他信息</h6>
+                <div>
+                    <div class="form-group">
+                        <label class="form-control-label">备注</label>
+                        <textarea rows="4" class="form-control" placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 5.</textarea>
+                    </div>
+                </div>
+                <div class="col-md-10 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary mb-4">提交任务</button>
+                </div>
+            </form>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        if (document.querySelector("#chart-bars")) {
+           	var ctx = document.getElementById("chart-bars").getContext("2d");
+           	new Chart(ctx, {
+              type: "bar",
+              data: {
+                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                  label: "Sales",
+                  tension: 0.4,
+                  borderWidth: 0,
+                  borderRadius: 4,
+                  borderSkipped: false,
+                  backgroundColor: "#fff",
+                  data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+                  maxBarThickness: 6
+                }, ],
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: false,
+                  }
+                },
+                interaction: {
+                  intersect: false,
+                  mode: 'index',
+                },
+                scales: {
+                  y: {
+                    grid: {
+                      drawBorder: false,
+                      display: false,
+                      drawOnChartArea: false,
+                      drawTicks: false,
+                    },
+                    ticks: {
+                      suggestedMin: 0,
+                      suggestedMax: 500,
+                      beginAtZero: true,
+                      padding: 15,
+                      font: {
+                        size: 14,
+                        family: "Open Sans",
+                        style: 'normal',
+                        lineHeight: 2
+                      },
+                      color: "#fff"
+                    },
+                  },
+                  x: {
+                    grid: {
+                      drawBorder: false,
+                      display: false,
+                      drawOnChartArea: false,
+                      drawTicks: false
+                    },
+                    ticks: {
+                      display: false
+                    },
+                  },
+                },
+              },
+            });
+        
+           };
+           if (document.querySelector("#chart-line")) {
+           	var ctx2 = document.getElementById("chart-line").getContext("2d");
+           	var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+           	gradientStroke1.addColorStop(1, "rgba(203,12,159,0.2)");
+           	gradientStroke1.addColorStop(0.2, "rgba(72,72,176,0.0)");
+           	gradientStroke1.addColorStop(0, "rgba(203,12,159,0)");
+           	var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+           	gradientStroke2.addColorStop(1, "rgba(20,23,39,0.2)");
+           	gradientStroke2.addColorStop(0.2, "rgba(72,72,176,0.0)");
+           	gradientStroke2.addColorStop(0, "rgba(20,23,39,0)");
+           	new Chart(ctx2, {
+              type: "line",
+              data: {
+                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Mobile apps",
+                    tension: 0.4,
+                    borderWidth: 0,
+                    pointRadius: 0,
+                    borderColor: "#cb0c9f",
+                    borderWidth: 3,
+                    backgroundColor: gradientStroke1,
+                    fill: true,
+                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                    maxBarThickness: 6
+        
+                  },
+                  {
+                    label: "Websites",
+                    tension: 0.4,
+                    borderWidth: 0,
+                    pointRadius: 0,
+                    borderColor: "#3A416F",
+                    borderWidth: 3,
+                    backgroundColor: gradientStroke2,
+                    fill: true,
+                    data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+                    maxBarThickness: 6
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: false,
+                  }
+                },
+                interaction: {
+                  intersect: false,
+                  mode: 'index',
+                },
+                scales: {
+                  y: {
+                    grid: {
+                      drawBorder: false,
+                      display: true,
+                      drawOnChartArea: true,
+                      drawTicks: false,
+                      borderDash: [5, 5]
+                    },
+                    ticks: {
+                      display: true,
+                      padding: 10,
+                      color: '#b2b9bf',
+                      font: {
+                        size: 11,
+                        family: "Open Sans",
+                        style: 'normal',
+                        lineHeight: 2
+                      },
+                    }
+                  },
+                  x: {
+                    grid: {
+                      drawBorder: false,
+                      display: false,
+                      drawOnChartArea: false,
+                      drawTicks: false,
+                      borderDash: [5, 5]
+                    },
+                    ticks: {
+                      display: true,
+                      color: '#b2b9bf',
+                      padding: 20,
+                      font: {
+                        size: 11,
+                        family: "Open Sans",
+                        style: 'normal',
+                        lineHeight: 2
+                      },
+                    }
+                  },
+                },
+              },
+            }); 
+           };
+    </script>
+{% endblock %}
