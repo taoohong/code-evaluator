@@ -9,10 +9,16 @@
         <pre style="max-height: 80vh; overflow:auto;">{{ file_content }}</pre>
     </div>
     <div class="col-md-6">
-        <h5>分析结果（分数：{{ score }}）</h5>
-        <div class="border rounded p-3" style="background:#f8f9fa;">
-            {{ llm_result|markdown }}
-        </div>
+        <h5>最终得分: {{ score }}</h5>
+        <ul>
+            {% for risk in evaluation %}
+                <li>
+                    <strong>{{ risk.风险点 }}:</strong> <br>
+                    {{ risk.原因 }} | 分数: {{ risk.风险分 }} <br>
+                    <pre style="max-height: 80vh; overflow:auto;">建议: {{ risk.修改建议 }} </pre>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 {% endblock %}

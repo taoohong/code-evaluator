@@ -1,69 +1,18 @@
+import json
 import os
 
 import pymongo
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from groq import Groq
 
+from .forms import UploadCodeForm, UploadProjectForm, UploadSQLForm
 from .models import AnalysisResult
-from .forms import UploadCodeForm, UploadSQLForm, UploadProjectForm
+from .llm_utils import call_groq_llm
 
 # Initialize Groq client
 # mongo_client = pymongo.MongoClient(settings.MONGO_URI)
 # mongo_db = mongo_client[settings.MONGO_DB]
-
-# Initialize Groq client with API key from settings
-client = Groq(
-    api_key=settings.GROQ_API_KEY,
-)
-
-
-def call_groq_llm(content, file_type):
-    prompt = build_prompt(content, file_type)
-    print(settings.GROQ_API_KEY)
-    try:
-        chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt,
-                }
-            ],
-            model="deepseek-r1-distill-llama-70b",
-            temperature=0.6,
-        )
-        completion = chat_completion.choices[0].message.content
-        score_line = [
-            line for line in completion.splitlines() if "score" in line.lower()
-        ]
-        score = 80.0
-        if score_line:
-            import re
-
-            match = re.search(r"(\d{1,3}(\.\d+)?)", score_line[0])
-            if match:
-                score = float(match.group(1))
-        return {"score": score, "suggestions": completion}
-    except Exception as e:
-        return {"score": 0.0, "suggestions": f"Error calling Groq API: {e}"}
-
-
-def build_prompt(content, file_type):
-    if file_type == "sql":
-        return f"""
-请使用中文评估以下 SQL 脚本的质量，重点关注性能优化、可读性、风险点（如 SQL 注入）以及可维护性。请给出一个 0 到 100 的评分，并提供详细改进建议。
-
-内容如下：
-{content}
-"""
-    else:
-        return f"""
-请使用中文评估以下代码文件的质量，重点关注可读性、可维护性、性能、安全性、编码风格一致性。请给出一个 0 到 100 的评分，并提供详细改进建议。
-
-内容如下：
-{content}
-"""
 
 
 def analysis_results(request):
@@ -72,13 +21,6 @@ def analysis_results(request):
         sum(r.score for r in results) / results.count() if results.exists() else 0
     )
     return render(request, "results.html", {"results": results, "avg_score": avg_score})
-
-
-def file_detail(request, file_id):
-    result = get_object_or_404(AnalysisResult, pk=file_id)
-    # file_doc = mongo_db.files.find_one({"filename": result.filename})
-    # file_content = file_doc.get("content", "文件内容未找到") if file_doc else "文件内容未找到"
-    # return render(request, 'file_detail.html', {'result': result, 'file_content': file_content})
 
 
 def initialize_system(request):
@@ -93,7 +35,7 @@ def initialize_system(request):
 def upload_project(request):
     if request.method == "POST":
         form = UploadProjectForm(request.POST, request.FILES)
-        
+
         if form.is_valid():
             files = request.FILES.getlist("code_file")
             for f in files:
@@ -123,7 +65,7 @@ def upload_code(request):
                 file_type=file_type,
                 description=form.cleaned_data.get("description", ""),
                 task_name=form.cleaned_data.get("task_name", ""),
-                suggestions=analysis["suggestions"],
+                evaluation=analysis["evaluation"],
                 score=analysis["score"],
             )
         return render(
@@ -132,7 +74,7 @@ def upload_code(request):
             {
                 "filename": filename,
                 "file_content": content,
-                "llm_result": analysis["suggestions"],
+                "evaluation": analysis["evaluation"],
                 "score": analysis["score"],
                 "task_name": form.cleaned_data.get("task_name", ""),
                 "description": form.cleaned_data.get("description", ""),
@@ -146,21 +88,28 @@ def upload_code(request):
 def upload_sql(request):
     if request.method == "POST":
         form = UploadSQLForm(request.POST, request.FILES)
-
         if form.is_valid():
             file = request.FILES["sql_file"]
             content = file.read().decode("utf-8")
             filename = file.name
             file_type = os.path.splitext(filename)[-1].replace(".", "")
             # save_file_to_mongo(filename, content)
-            analysis = call_groq_llm(content, file_type)
+            evaluation = call_groq_llm(content, file_type)
+            print(f"LLM evaluation result: {evaluation}")
+            try:
+                risks = json.loads(evaluation)   
+                final_score = calculate_sql_score(risks)
+            except Exception as e:
+                risks = []
+                final_score = 0.0
+                print(f"Error parsing LLM output: {evaluation}{e}")
             AnalysisResult.objects.create(
                 filename=filename,
                 file_type=file_type,
                 description=form.cleaned_data.get("description", ""),
                 task_name=form.cleaned_data.get("task_name", ""),
-                suggestions=analysis["suggestions"],
-                score=analysis["score"],
+                evaluation=risks,
+                score=final_score,
             )
         return render(
             request,
@@ -168,8 +117,8 @@ def upload_sql(request):
             {
                 "filename": filename,
                 "file_content": content,
-                "llm_result": analysis["suggestions"],
-                "score": analysis["score"],
+                "evaluation": risks,
+                "score": final_score,
                 "task_name": form.cleaned_data.get("task_name", ""),
                 "description": form.cleaned_data.get("description", ""),
             },
@@ -183,3 +132,26 @@ def save_file_to_mongo(filename, content):
     mongo_client = pymongo.MongoClient(settings.MONGO_URI)
     mongo_db = mongo_client[settings.MONGO_DB]
     mongo_db.files.insert_one({"filename": filename, "content": content})
+
+
+def calculate_sql_score(risks: json) -> float:
+    try:
+        if not isinstance(risks, list):
+            print("Invalid risks format, expected a list.")
+            return 0.0
+        if not all(isinstance(item, dict) for item in risks):
+            print("Invalid risks format, expected a list of dictionaries.")
+            return 0.0
+        if not all('风险分' in item for item in risks):
+            print("Invalid risks format, missing '风险分' key in some items.")
+            return 0.0 
+        total_deduction = 0
+        for item in risks:
+            score = item.get('风险分', 0)
+            factor = 1 if score <= 8 else 2
+            total_deduction += score * factor
+        final_score = max(0, 100 - total_deduction)
+        return final_score
+    except Exception as e:
+        print(f"Error parsing LLM output: {e}")
+        return 0.0
