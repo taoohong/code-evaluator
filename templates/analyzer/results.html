@@ -1,6 +1,7 @@
 {%extends "base.html"%}
 {%load static%}
 {%block title%}代码分析结果{%endblock%}
+{% block breadcrumb %}分析结果{% endblock %}
 
 {%block content%}
 <div class="row">
@@ -13,9 +14,9 @@
         <ul>
             {% for risk in evaluation %}
                 <li>
-                    <strong>{{ risk.风险点 }}:</strong> <br>
-                    {{ risk.原因 }} | 分数: {{ risk.风险分 }} <br>
-                    <pre style="max-height: 80vh; overflow:auto;">建议: {{ risk.修改建议 }} </pre>
+                    <strong>{{ risk.风险点 }}:</strong><br>
+                     {{ risk.原因 }} | 分数: {{ risk.风险分 }} <br>
+                    <pre style="max-height: 80vh; overflow:auto; font-size: inherit;">建议: {{ risk.修改建议 }}</pre>
                 </li>
             {% endfor %}
         </ul>
