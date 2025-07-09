@@ -4,7 +4,7 @@ python-dotenv
 requests
 
 # UI
-python-bootstrap5
+django-bootstrap5
 
 # LLM
 groq
